@@ -109,6 +109,7 @@ const data = [
 
     const form = document.createElement('form');
     form.classList.add('form');
+
     form.insertAdjacentHTML('beforeend', `
       <button class="close" type="button"></button>
       <h2 class="form-title">Добавить контакт</h2>
@@ -158,7 +159,7 @@ const data = [
     const main = createMain();
     const buttonGroup = createButtonGroup([
       {
-        className: 'btn btn-primary mr-3',
+        className: 'btn btn-primary mr-3 js-add',
         type: 'button',
         text: 'Добавить',
       },
@@ -178,6 +179,10 @@ const data = [
 
     return {
       list: table.tbody,
+      logo,
+      btnAdd: buttonGroup.btns[0],
+      formOverlay: form.overlay,
+      form: form.form,
     }
   };
 
@@ -201,10 +206,16 @@ const data = [
     const phoneLink = document.createElement('a');
     phoneLink.href = `tel:${phone}`
     phoneLink.textContent = phone;
+    tr.phoneLink = phoneLink;
 
     tdPhone.append(phoneLink);
 
-    tr.append(tdDel, tdName, tdSurname, tdPhone);
+    const tdEdit = document.createElement('td');
+    const buttotEdit = document.createElement('button')
+    buttotEdit.classList.add('edit-icon');
+    tdEdit.append(buttotEdit);
+
+    tr.append(tdDel, tdName, tdSurname, tdPhone, tdEdit);
 
     return tr;
   };
@@ -212,6 +223,8 @@ const data = [
   const renderContacts = (elem, data) => {
     const allRow = data.map(createRow);
     elem.append(...allRow);
+
+    return allRow;
   };
 
   const createFooter = title => {
@@ -227,14 +240,94 @@ const data = [
     return footer;
   };
 
+  const hoverRow = (allRow, logo) => {
+    const text = logo.textContent;
+
+    allRow.forEach(contact => {
+      contact.addEventListener('mouseenter', () => {
+        logo.textContent = contact.phoneLink.textContent;
+      });
+      contact.addEventListener('mouseleave', () => {
+        logo.textContent = text;
+      })
+    })
+  };
+
+  // const bubblingCapturing = () => {
+  //   const btnAdd = document.querySelector('.js-add');
+  //   const btnWtapper = document.querySelector('.btn-wrapper');
+  //   const main = document.querySelector('main');
+  //   const app = document.querySelector('#app');
+  //   const body = document.querySelector('body');
+
+  //   btnAdd.addEventListener('click', () => {
+  //     console.log('btnAdd');
+  //   });
+  //   btnWtapper.addEventListener('click', () => {
+  //     console.log('btnWtapper');
+  //   });
+  //   main.addEventListener('click', () => {
+  //     console.log('main');
+  //   });
+  //   document.addEventListener('click', () => {
+  //     console.log('document');
+  //   });
+  //   app.addEventListener('click', () => {
+  //     console.log('app');
+  //   });
+  //   window.addEventListener('click', () => {
+  //     console.log('window');
+  //   });
+  //   document.documentElement.addEventListener('click', () => {
+  //     console.log('html');
+  //   });
+  //   body.addEventListener('click', () => {
+  //     console.log('body');
+  //   });
+  // };
+
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const phoneBook = renderPhoneBook(app, title);
 
-    const {list} = phoneBook;
+    const {list, logo, btnAdd, formOverlay, form} = phoneBook;
 
-    renderContacts(list, data);
     //Здесь будет Функционал для следующих уроков
+    const allRow = renderContacts(list, data);
+    
+    hoverRow(allRow, logo);
+
+    btnAdd.addEventListener('click', () => {
+      formOverlay.classList.add('is-visible')
+    });
+
+    //bubblingCapturing();
+
+    form.addEventListener('click', event => {
+      event.stopPropagation();
+    });
+
+    formOverlay.addEventListener('click', () => {
+      formOverlay.classList.remove('is-visible')
+    });
+
+    const btnClose = document.querySelector('.close');
+    btnClose.addEventListener('click', () => {
+      formOverlay.classList.remove('is-visible')
+    });
+
+
+    document.addEventListener('touchstart', e => {
+      console.log(e.type);
+    });
+
+    document.addEventListener('touchmove', e => {
+      console.log(e.type);
+    });
+
+    document.addEventListener('touchend', e => {
+      console.log(e.type);
+    });
   };
 
   window.phoneBookInit = init;

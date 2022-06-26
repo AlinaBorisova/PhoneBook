@@ -130,3 +130,15 @@ body {
   color: #fff;
   text-align: center;
 }
+
+.edit-icon {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border: none;
+  background-color: transparent;
+  background-image: url("../img/icon_edit.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
