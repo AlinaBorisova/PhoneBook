@@ -255,39 +255,6 @@ const data = [
     })
   };
 
-  // const bubblingCapturing = () => {
-  //   const btnAdd = document.querySelector('.js-add');
-  //   const btnWtapper = document.querySelector('.btn-wrapper');
-  //   const main = document.querySelector('main');
-  //   const app = document.querySelector('#app');
-  //   const body = document.querySelector('body');
-
-  //   btnAdd.addEventListener('click', () => {
-  //     console.log('btnAdd');
-  //   });
-  //   btnWtapper.addEventListener('click', () => {
-  //     console.log('btnWtapper');
-  //   });
-  //   main.addEventListener('click', () => {
-  //     console.log('main');
-  //   });
-  //   document.addEventListener('click', () => {
-  //     console.log('document');
-  //   });
-  //   app.addEventListener('click', () => {
-  //     console.log('app');
-  //   });
-  //   window.addEventListener('click', () => {
-  //     console.log('window');
-  //   });
-  //   document.documentElement.addEventListener('click', () => {
-  //     console.log('html');
-  //   });
-  //   body.addEventListener('click', () => {
-  //     console.log('body');
-  //   });
-  // };
-
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const phoneBook = renderPhoneBook(app, title);
@@ -297,7 +264,6 @@ const data = [
       logo, 
       btnAdd, 
       formOverlay, 
-      form,
       btnDel,
     } = phoneBook;
 
@@ -310,12 +276,10 @@ const data = [
       formOverlay.classList.add('is-visible')
     });
 
-    //bubblingCapturing();
-
     formOverlay.addEventListener('click', e => {
       const target = e.target;
       if (target === formOverlay ||
-           target.closest('.close')) {
+          target.closest('.close')) {
         formOverlay.classList.remove('is-visible');
       };
     });
@@ -350,6 +314,7 @@ const data = [
         target.closest('.contact').remove();
       };
     });
+  
   };
 
   window.phoneBookInit = init;
