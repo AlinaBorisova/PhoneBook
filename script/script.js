@@ -1,33 +1,31 @@
 'use strict';
 
-const data = [
-  {
-      name: 'Иван',
-      surname: 'Петров',
-      phone: '+79514545454',
-  },
-  {
-      name: 'Игорь',
-      surname: 'Семёнов',
-      phone: '+79999999999',
-  },
-  {
-      name: 'Семён',
-      surname: 'Иванов',
-      phone: '+79800252525',
-  },
-  {
-      name: 'Мария',
-      surname: 'Попова',
-      phone: '+79876543210',
-  },
-];
-
+let data = [];
 {
-  const addContactData = contact => {
-    data.push(contact);
-    console.log('data', data);
-  }
+  const getStorage = function(keyItem) {
+    if (localStorage.getItem('data')) {
+      return JSON.parse(localStorage.getItem(keyItem));
+    } else return [];
+  };
+  const setStorage = function(person, obj) {
+    getStorage('data');
+    obj.push(person);
+    localStorage.setItem('data', JSON.stringify(obj));
+  };
+
+ const removeStorage = function(phone) {
+  //console.log(phone)
+  let items = JSON.parse(localStorage.getItem('data'));
+  //console.log(items)
+    for (let i = 0; i < items.length; i++) {
+      if (items[i]['phone'] === phone) items.splice(i, 1);
+    }
+  localStorage.setItem('data', JSON.stringify(items));
+}
+
+  // const addContactData = contact => {
+  //   data.push(contact);
+  // }
   const createContainer = () => {
     const container = document.createElement('div');
     container.classList.add('container');
@@ -195,11 +193,14 @@ const data = [
 
     const tr = document.createElement('tr');
     tr.classList.add('contact');
+    //tr.setAttribute('id', Date.now());
 
     const tdDel = document.createElement('td');
     tdDel.classList.add('delete');
+    //tdDel.setAttribute('id', Date.now());
     const buttonDel = document.createElement('button');
     buttonDel.classList.add('del-icon');
+    //buttonDel.setAttribute('id', Date.now());
     tdDel.append(buttonDel);
 
     const tdName = document.createElement('td');
@@ -213,8 +214,10 @@ const data = [
     phoneLink.href = `tel:${phone}`
     phoneLink.textContent = phone;
     tr.phoneLink = phoneLink;
+    //tdPhone.setAttribute('id', Date.now());
 
     tdPhone.append(phoneLink);
+
 
     const tdEdit = document.createElement('td');
     const buttotEdit = document.createElement('button')
@@ -222,7 +225,13 @@ const data = [
     tdEdit.append(buttotEdit);
 
     tr.append(tdDel, tdName, tdSurname, tdPhone, tdEdit);
-
+    
+    setStorage({
+      name: firstName,
+      surname: surname,
+      phone: phone,
+    }, data);
+  
     return tr;
   };
 
@@ -296,15 +305,18 @@ const data = [
 
     list.addEventListener('click', e => {
       const target = e.target;
+      let phone = e.target.closest('tr').querySelector('td:nth-child(4) a').textContent
+      console.log(phone)
       if (target.closest('.del-icon')) {
         target.closest('.contact').remove();
+        removeStorage(phone);
       };
     });
   };
 
   const addContactPage = (contact, list) => {
     list.append(createRow(contact));
-  }
+  };
 
   const formControl = (form, list, closeModal) => {
     form.addEventListener('submit', e => {
@@ -313,7 +325,7 @@ const data = [
 
       const newContact = Object.fromEntries(formData);
       addContactPage(newContact, list);
-      addContactData(newContact);
+      //addContactData(newContact);
 
       form.reset();
       closeModal();
@@ -322,6 +334,7 @@ const data = [
 
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
+    let data = getStorage('data');
 
     const {
       list, 
@@ -339,6 +352,7 @@ const data = [
     hoverRow(allRow, logo);
     deleteControl(btnDel, list);
     formControl(form, list, closeModal);
+
   };
 
   window.phoneBookInit = init;
