@@ -13,10 +13,8 @@ let data = [];
     localStorage.setItem('data', JSON.stringify(obj));
   };
 
- const removeStorage = function(phone) {
-  //console.log(phone)
-  let items = JSON.parse(localStorage.getItem('data'));
-  //console.log(items)
+  const removeStorage = function(phone) {
+    let items = JSON.parse(localStorage.getItem('data'));
     for (let i = 0; i < items.length; i++) {
       if (items[i]['phone'] === phone) items.splice(i, 1);
     }
@@ -193,14 +191,12 @@ let data = [];
 
     const tr = document.createElement('tr');
     tr.classList.add('contact');
-    //tr.setAttribute('id', Date.now());
+    tr.setAttribute('id', (data.length + 1));
 
     const tdDel = document.createElement('td');
     tdDel.classList.add('delete');
-    //tdDel.setAttribute('id', Date.now());
     const buttonDel = document.createElement('button');
     buttonDel.classList.add('del-icon');
-    //buttonDel.setAttribute('id', Date.now());
     tdDel.append(buttonDel);
 
     const tdName = document.createElement('td');
@@ -214,8 +210,7 @@ let data = [];
     phoneLink.href = `tel:${phone}`
     phoneLink.textContent = phone;
     tr.phoneLink = phoneLink;
-    //tdPhone.setAttribute('id', Date.now());
-
+    tdPhone.setAttribute('id', (data.length + 1));
     tdPhone.append(phoneLink);
 
 
@@ -305,8 +300,7 @@ let data = [];
 
     list.addEventListener('click', e => {
       const target = e.target;
-      let phone = e.target.closest('tr').querySelector('td:nth-child(4) a').textContent
-      console.log(phone)
+      let phone = e.target.closest('tr').querySelector('td:nth-child(4) a').textContent;
       if (target.closest('.del-icon')) {
         target.closest('.contact').remove();
         removeStorage(phone);
