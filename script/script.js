@@ -15,9 +15,9 @@ let data = [];
 
   const removeStorage = function(phone) {
     let items = JSON.parse(localStorage.getItem('data'));
-    for (let i = 0; i < items.length; i++) {
-      if (items[i]['phone'] === phone) items.splice(i, 1);
-    }
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].id === Number(phone.id)) items.splice(i, 1);
+       }
   localStorage.setItem('data', JSON.stringify(items));
 }
 
@@ -129,7 +129,7 @@ let data = [];
           id="phone" type="number" required>
       </div>
     `)
-
+    
     const buttonGroup = createButtonGroup([
       {
         className: 'btn btn-primary mr-3',
@@ -191,7 +191,6 @@ let data = [];
 
     const tr = document.createElement('tr');
     tr.classList.add('contact');
-    tr.setAttribute('id', (data.length + 1));
 
     const tdDel = document.createElement('td');
     tdDel.classList.add('delete');
@@ -222,6 +221,7 @@ let data = [];
     tr.append(tdDel, tdName, tdSurname, tdPhone, tdEdit);
     
     setStorage({
+      id: data.length + 1,
       name: firstName,
       surname: surname,
       phone: phone,
@@ -300,11 +300,11 @@ let data = [];
 
     list.addEventListener('click', e => {
       const target = e.target;
-      let phone = e.target.closest('tr').querySelector('td:nth-child(4) a').textContent;
-      if (target.closest('.del-icon')) {
-        target.closest('.contact').remove();
-        removeStorage(phone);
-      };
+      let phone = e.target.closest('tr').querySelector('td:nth-child(4)');
+        if (target.closest('.del-icon')) {
+          target.closest('.contact').remove();
+          removeStorage(phone);
+        };
     });
   };
 
