@@ -1,6 +1,6 @@
-import {removeStorage} from './serviceStorage.js';
+import {removeStorage} from './serviceStorage';
 
-import {createRow} from './createElements.js';
+import {createRow} from './createElements';
 
 export const modalControl = (btnAdd, formOverlay) => {
   const openModal = () => {

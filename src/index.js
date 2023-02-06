@@ -1,15 +1,17 @@
 
-import {getStorage} from './modules/serviceStorage.js';
+import {getStorage} from './script/serviceStorage';
 
-import {renderPhoneBook as renderContactPhoneBook} from './modules/render.js';
+import {renderPhoneBook as renderContactPhoneBook} from './script/render';
 
-import renderContacts from './modules/render.js';
+import renderContacts from './script/render';
 
 import {
   modalControl,
   deleteControl,
   formControl,
-} from './modules/control.js';
+} from './script/control';
+
+import './scss/index.scss';
 
 {
   const init = (selectorApp, title) => {
